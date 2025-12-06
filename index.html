@@ -13,15 +13,16 @@
             --neon-pink: #ff00ff;
             --neon-yellow: #ffee00;
             --bg-dark: #050505;
-            --bg-panel: #0a0a10;
-            --grid-color: rgba(0, 243, 255, 0.1);
+            --bg-card: #0e0e14;
+            --grid-color: rgba(0, 243, 255, 0.08);
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            cursor: crosshair; /* Курсор-прицел */
+            cursor: crosshair;
+            scroll-behavior: smooth;
         }
 
         body {
@@ -32,15 +33,15 @@
             position: relative;
         }
 
-        /* === ФОНОВЫЕ ЭФФЕКТЫ (CRT & GRID) === */
+        /* === BG EFFECTS === */
         .scanlines {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0) 50%, rgba(0,0,0,0.2) 50%, rgba(0,0,0,0.2));
             background-size: 100% 4px;
-            z-index: 100;
+            z-index: 999;
             pointer-events: none;
-            opacity: 0.6;
+            opacity: 0.4;
         }
 
         .cyber-grid {
@@ -49,16 +50,15 @@
             background-image: 
                 linear-gradient(var(--grid-color) 1px, transparent 1px),
                 linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
-            background-size: 50px 50px;
+            background-size: 40px 40px;
             transform: perspective(500px) rotateX(60deg) translateY(-100px) scale(2);
             animation: gridMove 20s linear infinite;
             z-index: -1;
-            opacity: 0.3;
         }
 
         @keyframes gridMove {
             0% { transform: perspective(500px) rotateX(60deg) translateY(0) scale(2); }
-            100% { transform: perspective(500px) rotateX(60deg) translateY(50px) scale(2); }
+            100% { transform: perspective(500px) rotateX(60deg) translateY(40px) scale(2); }
         }
 
         /* === HEADER === */
@@ -68,285 +68,247 @@
             align-items: center;
             padding: 20px 50px;
             border-bottom: 2px solid var(--neon-cyan);
-            background: rgba(5, 5, 5, 0.9);
-            position: relative;
-            z-index: 10;
-            box-shadow: 0 0 15px var(--neon-cyan);
+            background: rgba(5, 5, 5, 0.95);
+            position: fixed;
+            width: 100%;
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 5px 20px rgba(0, 243, 255, 0.2);
         }
 
         .logo {
             font-family: 'Orbitron', sans-serif;
-            font-size: 2rem;
+            font-size: 1.8rem;
             font-weight: 900;
-            color: var(--neon-pink);
-            text-shadow: 2px 2px var(--neon-cyan);
-            position: relative;
+            color: #fff;
+            letter-spacing: 2px;
         }
+        .logo span { color: var(--neon-pink); }
 
-        nav ul {
-            display: flex;
-            list-style: none;
-            gap: 30px;
-        }
-
+        nav ul { display: flex; list-style: none; gap: 30px; }
         nav a {
-            color: var(--neon-cyan);
+            color: #fff;
             text-decoration: none;
-            font-size: 1.2rem;
+            font-size: 1rem;
             font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 2px;
             transition: 0.3s;
-            position: relative;
         }
-
-        nav a:hover {
+        nav a:hover { color: var(--neon-cyan); text-shadow: 0 0 8px var(--neon-cyan); }
+        
+        .phone-header {
             color: var(--neon-yellow);
-            text-shadow: 0 0 10px var(--neon-yellow);
+            font-family: 'Orbitron';
+            font-weight: bold;
+            text-shadow: 0 0 5px var(--neon-yellow);
         }
 
-        nav a::before {
-            content: '>';
-            position: absolute;
-            left: -15px;
-            opacity: 0;
-            transition: 0.3s;
-        }
-
-        nav a:hover::before {
-            opacity: 1;
-            left: -20px;
-        }
-
-        /* === HERO SECTION === */
+        /* === HERO === */
         .hero {
-            height: 90vh;
+            height: 100vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             text-align: center;
-            position: relative;
+            padding-top: 80px;
         }
 
         .glitch-text {
             font-family: 'Orbitron', sans-serif;
-            font-size: 5rem;
+            font-size: 4.5rem;
             font-weight: 900;
             position: relative;
             color: #fff;
             text-transform: uppercase;
+            line-height: 1.1;
         }
-
+        
+        /* Простая глитч анимация для заголовка */
         .glitch-text::before, .glitch-text::after {
             content: attr(data-text);
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0; width: 100%; height: 100%;
         }
-
         .glitch-text::before {
-            left: 2px;
-            text-shadow: -2px 0 var(--neon-pink);
-            clip: rect(24px, 550px, 90px, 0);
+            left: 2px; text-shadow: -2px 0 var(--neon-pink); clip: rect(24px, 550px, 90px, 0);
             animation: glitch-anim-2 3s infinite linear alternate-reverse;
         }
-
         .glitch-text::after {
-            left: -2px;
-            text-shadow: -2px 0 var(--neon-cyan);
-            clip: rect(85px, 550px, 140px, 0);
+            left: -2px; text-shadow: -2px 0 var(--neon-cyan); clip: rect(85px, 550px, 140px, 0);
             animation: glitch-anim 2.5s infinite linear alternate-reverse;
         }
-
         @keyframes glitch-anim {
-            0% { clip: rect(10px, 9999px, 30px, 0); }
-            20% { clip: rect(80px, 9999px, 100px, 0); }
-            40% { clip: rect(10px, 9999px, 50px, 0); }
-            60% { clip: rect(60px, 9999px, 90px, 0); }
-            80% { clip: rect(30px, 9999px, 60px, 0); }
-            100% { clip: rect(50px, 9999px, 90px, 0); }
+            0% { clip: rect(10px, 9999px, 30px, 0); } 100% { clip: rect(50px, 9999px, 90px, 0); }
         }
-
         @keyframes glitch-anim-2 {
-            0% { clip: rect(100px, 9999px, 120px, 0); }
-            20% { clip: rect(20px, 9999px, 40px, 0); }
-            40% { clip: rect(80px, 9999px, 110px, 0); }
-            60% { clip: rect(10px, 9999px, 30px, 0); }
-            80% { clip: rect(50px, 9999px, 70px, 0); }
-            100% { clip: rect(30px, 9999px, 50px, 0); }
+            0% { clip: rect(100px, 9999px, 120px, 0); } 100% { clip: rect(30px, 9999px, 50px, 0); }
         }
 
         .subtitle {
-            font-size: 1.5rem;
-            color: var(--neon-yellow);
             margin-top: 20px;
-            border-left: 3px solid var(--neon-yellow);
-            padding-left: 15px;
-            opacity: 0;
-            animation: fadeIn 2s forwards 1s;
+            font-size: 1.5rem;
+            color: var(--neon-cyan);
+            letter-spacing: 3px;
+            background: rgba(0, 243, 255, 0.1);
+            padding: 5px 20px;
+            border: 1px solid var(--neon-cyan);
         }
 
-        .cta-btn {
-            margin-top: 50px;
-            padding: 20px 40px;
-            background: transparent;
-            color: var(--neon-cyan);
-            font-family: 'Orbitron', sans-serif;
-            font-weight: bold;
-            font-size: 1.2rem;
-            border: 2px solid var(--neon-cyan);
+        /* === SECTIONS GENERAL === */
+        section {
+            padding: 80px 10%;
+            position: relative;
+            z-index: 10;
+        }
+
+        .section-title {
+            font-family: 'Orbitron';
+            font-size: 2.5rem;
+            color: var(--neon-yellow);
+            margin-bottom: 50px;
+            text-transform: uppercase;
+            border-left: 5px solid var(--neon-pink);
+            padding-left: 20px;
+            display: inline-block;
+        }
+
+        /* === SERVICES === */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+        .card {
+            background: var(--bg-card);
+            border: 1px solid #333;
+            padding: 30px;
+            transition: 0.3s;
             position: relative;
             overflow: hidden;
-            transition: 0.3s;
-            clip-path: polygon(10% 0, 100% 0, 100% 70%, 90% 100%, 0 100%, 0 30%);
         }
-
-        .cta-btn:hover {
-            background: var(--neon-cyan);
-            color: #000;
-            box-shadow: 0 0 30px var(--neon-cyan);
+        .card:hover {
+            border-color: var(--neon-cyan);
+            box-shadow: 0 0 15px rgba(0, 243, 255, 0.3);
+            transform: translateY(-5px);
         }
+        .card i { font-size: 2.5rem; color: var(--neon-pink); margin-bottom: 20px; }
+        .card h3 { font-family: 'Orbitron'; margin-bottom: 10px; color: #fff; }
+        .card p { color: #aaa; line-height: 1.5; }
 
-        /* === SERVICES GRID === */
-        .services {
-            padding: 100px 50px;
+        /* === WORKFLOW (PROTOCOL) === */
+        .workflow-steps {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .step {
+            flex: 1;
+            min-width: 200px;
+            background: rgba(0,0,0,0.6);
+            border: 1px solid var(--neon-cyan);
+            padding: 20px;
+            position: relative;
+        }
+        .step-number {
+            font-size: 3rem;
+            font-weight: 900;
+            color: rgba(255,255,255,0.1);
+            position: absolute;
+            top: 0; right: 10px;
+            font-family: 'Orbitron';
+        }
+        .step h4 { color: var(--neon-cyan); font-size: 1.2rem; margin-bottom: 10px; text-transform: uppercase; }
+
+        /* === PRICING === */
+        .pricing-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 40px;
-            position: relative;
-            z-index: 5;
         }
-
-        .card {
-            background: rgba(10, 10, 16, 0.8);
-            border: 1px solid var(--neon-pink);
-            padding: 30px;
-            position: relative;
-            transition: 0.4s;
-            /* Cyberpunk Corners */
-            clip-path: polygon(
-                0 0, 
-                100% 0, 
-                100% calc(100% - 20px), 
-                calc(100% - 20px) 100%, 
-                0 100%
-            );
-        }
-
-        .card::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 2px;
-            background: var(--neon-pink);
-            transform: scaleX(0);
-            transform-origin: left;
-            transition: 0.4s;
-        }
-
-        .card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 0 20px rgba(255, 0, 255, 0.4);
-        }
-
-        .card:hover::before {
-            transform: scaleX(1);
-        }
-
-        .card-icon {
-            font-size: 3rem;
-            color: var(--neon-cyan);
-            margin-bottom: 20px;
-            animation: floatIcon 3s ease-in-out infinite;
-        }
-
-        @keyframes floatIcon {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-
-        .card h3 {
-            font-family: 'Orbitron';
-            color: #fff;
-            font-size: 1.5rem;
-            margin-bottom: 15px;
-        }
-
-        .card p {
-            color: #aaa;
-            font-size: 1.1rem;
-            line-height: 1.6;
-        }
-
-        /* === TERMINAL SECTION === */
-        .terminal-section {
-            padding: 50px;
-            background: #000;
-            border-top: 2px solid var(--neon-yellow);
-            border-bottom: 2px solid var(--neon-yellow);
-            margin: 50px 0;
-            font-family: 'Courier New', monospace;
-            color: var(--neon-yellow);
-        }
-
-        .terminal-header {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-            opacity: 0.7;
-        }
-
-        .dot { width: 12px; height: 12px; border-radius: 50%; background: #333; }
-        .dot.red { background: #ff5f56; }
-        .dot.yellow { background: #ffbd2e; }
-        .dot.green { background: #27c93f; }
-
-        .typing-effect {
-            font-size: 1.2rem;
-            border-right: 2px solid var(--neon-yellow);
-            white-space: pre-wrap;
-            animation: blinkCursor 0.7s infinite;
-        }
-
-        @keyframes blinkCursor {
-            0%, 100% { border-color: transparent; }
-            50% { border-color: var(--neon-yellow); }
-        }
-
-        /* === FOOTER === */
-        footer {
-            padding: 40px;
+        .price-card {
+            background: var(--bg-card);
+            border: 2px solid #333;
+            padding: 40px 20px;
             text-align: center;
-            border-top: 1px solid #333;
-            color: #666;
-            font-size: 0.9rem;
+            transition: 0.3s;
+            clip-path: polygon(20px 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%, 0 20px);
         }
-
-        footer span { color: var(--neon-pink); }
-
-        @keyframes fadeIn {
-            to { opacity: 1; }
+        .price-card.popular {
+            border-color: var(--neon-yellow);
+            box-shadow: 0 0 20px rgba(255, 238, 0, 0.2);
         }
-
-        /* Декор в углу */
-        .decoration-box {
-            position: absolute;
-            bottom: 20px;
-            right: 20px;
-            width: 150px;
-            height: 100px;
+        .price-card h3 { font-size: 1.5rem; margin-bottom: 10px; font-family: 'Orbitron'; }
+        .price { font-size: 2.5rem; color: var(--neon-pink); font-weight: bold; margin-bottom: 20px; }
+        .price span { font-size: 1rem; color: #fff; }
+        .features { list-style: none; margin-bottom: 30px; text-align: left; padding-left: 20px; }
+        .features li { margin-bottom: 10px; color: #ccc; }
+        .features li::before { content: '>'; color: var(--neon-cyan); margin-right: 10px; }
+        
+        .btn {
+            display: inline-block;
+            padding: 10px 30px;
+            background: transparent;
+            color: var(--neon-cyan);
             border: 1px solid var(--neon-cyan);
-            opacity: 0.5;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            text-decoration: none;
+            font-family: 'Orbitron';
+            text-transform: uppercase;
+            transition: 0.3s;
         }
-        .decoration-box span {
-            font-size: 0.7rem;
-            color: var(--neon-cyan);
+        .btn:hover { background: var(--neon-cyan); color: #000; }
+
+        /* === FAQ === */
+        details {
+            background: rgba(14, 14, 20, 0.8);
+            margin-bottom: 15px;
+            border-left: 3px solid #333;
+            transition: 0.3s;
+        }
+        details[open] { border-left: 3px solid var(--neon-pink); }
+        summary {
+            padding: 20px;
+            cursor: pointer;
+            font-weight: bold;
+            list-style: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        summary::after { content: '+'; font-size: 1.5rem; color: var(--neon-cyan); }
+        details[open] summary::after { content: '-'; color: var(--neon-pink); }
+        .faq-answer { padding: 0 20px 20px 20px; color: #aaa; line-height: 1.6; }
+
+        /* === CONTACT === */
+        .contact-section {
+            background: linear-gradient(45deg, #050505, #111);
+            border-top: 1px solid var(--neon-cyan);
             text-align: center;
+        }
+        .big-phone {
+            font-family: 'Orbitron';
+            font-size: 3rem;
+            color: #fff;
+            text-decoration: none;
+            display: block;
+            margin: 30px 0;
+            text-shadow: 0 0 10px var(--neon-pink);
+            transition: 0.3s;
+        }
+        .big-phone:hover {
+            color: var(--neon-yellow);
+            text-shadow: 0 0 20px var(--neon-yellow);
+            letter-spacing: 2px;
+        }
+
+        /* MOBILE ADAPT */
+        @media (max-width: 768px) {
+            .glitch-text { font-size: 2.5rem; }
+            header { padding: 15px 20px; flex-direction: column; gap: 10px; }
+            nav ul { font-size: 0.8rem; gap: 15px; }
+            .big-phone { font-size: 1.8rem; }
         }
 
     </style>
@@ -357,102 +319,195 @@
     <div class="cyber-grid"></div>
 
     <header>
-        <div class="logo">NEXUS<span style="color:var(--neon-cyan)">//</span>LEGAL</div>
+        <div class="logo">NEXUS<span>//</span>LEGAL</div>
         <nav>
             <ul>
-                <li><a href="#">Услуги</a></li>
-                <li><a href="#">Нетраннеры</a></li>
-                <li><a href="#">Корпораты</a></li>
-                <li><a href="#">Связь</a></li>
+                <li><a href="#services">Услуги</a></li>
+                <li><a href="#process">Протокол</a></li>
+                <li><a href="#pricing">Тарифы</a></li>
+                <li><a href="#faq">FAQ</a></li>
             </ul>
         </nav>
+        <div class="phone-header"><i class="fas fa-phone-alt"></i> +7 707 453 45 18</div>
     </header>
 
     <section class="hero">
-        <h1 class="glitch-text" data-text="ЗАЩИТА В ЦИФРЕ">ЗАЩИТА В ЦИФРЕ</h1>
-        <div class="subtitle">ЮРИДИЧЕСКИЕ ПРОТОКОЛЫ 2077 // АВТОРИЗАЦИЯ...</div>
-        <button class="cta-btn">ИНИЦИИРОВАТЬ КОНТАКТ</button>
+        <h1 class="glitch-text" data-text="ПРАВОВАЯ ЗАЩИТА">ПРАВОВАЯ ЗАЩИТА</h1>
+        <div class="subtitle">В МИРЕ ЦИФРОВОГО ХАОСА</div>
+        <br>
+        <a href="#contacts" class="btn" style="margin-top: 30px; font-size: 1.2rem;">СВЯЗЬ С ОПЕРАТОРОМ</a>
+    </section>
 
-        <div class="decoration-box">
-            <span>SYS.STATUS: ONLINE<br>SECURE_CONNECTION</span>
+    <section id="services">
+        <h2 class="section-title">БАЗА ДАННЫХ УСЛУГ</h2>
+        <div class="services-grid">
+            <div class="card">
+                <i class="fas fa-shield-alt"></i>
+                <h3>КОРПОРАТИВНОЕ ПРАВО</h3>
+                <p>Защита бизнеса от рейдерских атак, юридическая упаковка стартапов, споры с мегакорпорациями и регуляторами.</p>
+            </div>
+            <div class="card">
+                <i class="fas fa-code-branch"></i>
+                <h3>IT И СМАРТ-КОНТРАКТЫ</h3>
+                <p>Аудит кода на соответствие законам. Защита интеллектуальной собственности ПО и цифровых активов.</p>
+            </div>
+            <div class="card">
+                <i class="fas fa-user-secret"></i>
+                <h3>УГОЛОВНАЯ ЗАЩИТА</h3>
+                <p>Адвокаты для нетраннеров и CEO. Защита при обвинениях в киберпреступлениях и экономических махинациях.</p>
+            </div>
+            <div class="card">
+                <i class="fas fa-file-signature"></i>
+                <h3>АРБИТРАЖ</h3>
+                <p>Представительство в судах. Взыскание долгов (включая цифровые валюты). Банкротство физ. и юр. лиц.</p>
+            </div>
         </div>
     </section>
 
-    <section class="terminal-section">
-        <div class="terminal-header">
-            <div class="dot red"></div>
-            <div class="dot yellow"></div>
-            <div class="dot green"></div>
-        </div>
-        <div class="typing-effect" id="terminal-text"></div>
-    </section>
-
-    <section class="services">
-        <div class="card">
-            <i class="fas fa-gavel card-icon"></i>
-            <h3>КОРПОРАТИВНОЕ ПРАВО</h3>
-            <p>Защита активов от враждебных поглощений мегакорпораций. Арбитраж в спорах о патентах на импланты.</p>
-        </div>
-        <div class="card">
-            <i class="fas fa-user-shield card-icon"></i>
-            <h3>ЗАЩИТА НЕТРАННЕРОВ</h3>
-            <p>Юридическая поддержка при обвинениях во взломе данных и нарушении протоколов безопасности ICE.</p>
-        </div>
-        <div class="card">
-            <i class="fas fa-file-contract card-icon"></i>
-            <h3>СМАРТ-КОНТРАКТЫ</h3>
-            <p>Аудит и валидация кода контрактов. Устранение уязвимостей до подписания цифровой подписью.</p>
-        </div>
-        <div class="card">
-            <i class="fas fa-fingerprint card-icon"></i>
-            <h3>ЦИФРОВАЯ ЛИЧНОСТЬ</h3>
-            <p>Восстановление прав на цифровой слепок сознания. Споры о наследовании облачных данных.</p>
+    <section id="process" style="background: rgba(0, 243, 255, 0.02);">
+        <h2 class="section-title">ПРОТОКОЛ ВЗАИМОДЕЙСТВИЯ</h2>
+        <div class="workflow-steps">
+            <div class="step">
+                <span class="step-number">01</span>
+                <h4><i class="fas fa-wifi"></i> ИНИЦИАЛИЗАЦИЯ</h4>
+                <p>Вы связываетесь с нами. Мы проводим первичный брифинг (защищенный канал связи).</p>
+            </div>
+            <div class="step">
+                <span class="step-number">02</span>
+                <h4><i class="fas fa-search"></i> ДИАГНОСТИКА</h4>
+                <p>Анализ документов и рисков. Поиск уязвимостей в позиции оппонента.</p>
+            </div>
+            <div class="step">
+                <span class="step-number">03</span>
+                <h4><i class="fas fa-terminal"></i> ВЗЛОМ СИСТЕМЫ</h4>
+                <p>Активная фаза. Суды, переговоры, подготовка исков. Работаем до результата.</p>
+            </div>
+            <div class="step">
+                <span class="step-number">04</span>
+                <h4><i class="fas fa-check-circle"></i> РЕЗУЛЬТАТ</h4>
+                <p>Передача активов, закрытие дела, чистка юридической истории.</p>
+            </div>
         </div>
     </section>
 
-    <footer>
-        <p>SYSTEM DESIGN BY GEMINI AI // <span id="year"></span> NEXUS LEGAL CORP.</p>
-        <p style="font-size: 0.7rem; margin-top: 10px;">ВСЕ ПРАВА ЗАЩИЩЕНЫ НЕЙРОСЕТЬЮ.</p>
+    <section id="pricing">
+        <h2 class="section-title">СТОИМОСТЬ ОПЕРАЦИЙ</h2>
+        <div class="pricing-grid">
+            <div class="price-card">
+                <h3>КОНСУЛЬТАЦИЯ</h3>
+                <div class="price">15K <span>KZT</span></div>
+                <ul class="features">
+                    <li>Анализ ситуации (1 час)</li>
+                    <li>Разбор документов</li>
+                    <li>Устный прогноз рисков</li>
+                    <li>План действий</li>
+                </ul>
+                <a href="#contacts" class="btn">ВЫБРАТЬ</a>
+            </div>
+            <div class="price-card popular">
+                <div style="color:var(--neon-yellow); margin-bottom:5px; font-size:0.8rem;">РЕКОМЕНДУЕМ</div>
+                <h3>БИЗНЕС-ПАКЕТ</h3>
+                <div class="price">200K <span>KZT/мес</span></div>
+                <ul class="features">
+                    <li>Полное сопровождение</li>
+                    <li>Проверка договоров</li>
+                    <li>Защита в переговорах</li>
+                    <li>На связи 24/7</li>
+                </ul>
+                <a href="#contacts" class="btn" style="background:var(--neon-yellow); color:#000; border:none;">ВЫБРАТЬ</a>
+            </div>
+            <div class="price-card">
+                <h3>СУДЕБНЫЙ ИСК</h3>
+                <div class="price">ОТ 300K <span>KZT</span></div>
+                <ul class="features">
+                    <li>Подготовка иска</li>
+                    <li>Участие в заседаниях</li>
+                    <li>Обжалование решений</li>
+                    <li>Работа до финала</li>
+                </ul>
+                <a href="#contacts" class="btn">ВЫБРАТЬ</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="faq">
+        <h2 class="section-title">FAQ / БАЗА ЗНАНИЙ</h2>
+        <div style="max-width: 800px; margin: 0 auto;">
+            <details>
+                <summary>ГАРАНТИРУЕТЕ ЛИ ВЫ РЕЗУЛЬТАТ?</summary>
+                <div class="faq-answer">
+                    <p>В юриспруденции, как и в киберпространстве, нет 100% гарантий. Однако наш опыт позволяет минимизировать риски и достигать успеха в 92% кейсов. Мы не беремся за заведомо провальные дела без предупреждения клиента.</p>
+                </div>
+            </details>
+            <details>
+                <summary>КАК ПРОХОДИТ ОПЛАТА?</summary>
+                <div class="faq-answer">
+                    <p>Принимаем фиат (безнал) и цифровые активы по договоренности. Работаем официально по договору оказания услуг с выдачей всех закрывающих документов.</p>
+                </div>
+            </details>
+            <details>
+                <summary>ВЫ РАБОТАЕТЕ ТОЛЬКО В АСТАНЕ?</summary>
+                <div class="faq-answer">
+                    <p>Нет. Наша сеть покрывает весь Казахстан. Судебные процессы проводим удаленно через E-Sot (Судебный кабинет) или командируем специалистов.</p>
+                </div>
+            </details>
+            <details>
+                <summary>КОНФИДЕНЦИАЛЬНОСТЬ ДАННЫХ?</summary>
+                <div class="faq-answer">
+                    <p>Мы используем защищенные серверы и NDA. Информация о клиентах не покидает пределы нашего контура безопасности.</p>
+                </div>
+            </details>
+        </div>
+    </section>
+
+    <section id="contacts" class="contact-section">
+        <h2 class="section-title" style="border:none; padding:0;">УСТАНОВИТЬ СОЕДИНЕНИЕ</h2>
+        <p style="color:#aaa; margin-bottom: 20px;">КАНАЛ СВЯЗИ ЗАШИФРОВАН. ОЖИДАНИЕ ВВОДА...</p>
+        
+        <a href="tel:+77074534518" class="big-phone">
+            <i class="fas fa-mobile-alt"></i> +7 707 453 45 18
+        </a>
+        
+        <div style="display:flex; justify-content:center; gap:20px; margin-top:30px;">
+            <a href="https://wa.me/77074534518" class="btn" target="_blank"><i class="fab fa-whatsapp"></i> WHATSAPP</a>
+            <a href="#" class="btn" target="_blank"><i class="fab fa-telegram"></i> TELEGRAM</a>
+        </div>
+    </section>
+
+    <footer style="text-align: center; padding: 20px; border-top: 1px solid #333; color: #555; font-size: 0.8rem;">
+        SYSTEM STATUS: STABLE // NEXUS LEGAL © <span id="year"></span>
     </footer>
 
     <script>
-        // Эффект печатающей машинки для терминала
-        const text = "> CONNECTING TO DATABASE...\n> LOADING LEGAL MODULES...\n> SCANNING FOR VIOLATIONS...\n> SYSTEM READY.\n> МЫ ЗАЩИТИМ ВАШИ ПРАВА В ЛЮБОЙ РЕАЛЬНОСТИ.";
-        const speed = 50; 
-        let i = 0;
-        
-        function typeWriter() {
-            if (i < text.length) {
-                document.getElementById("terminal-text").innerHTML += text.charAt(i);
-                i++;
-                setTimeout(typeWriter, speed);
-            }
-        }
+        // Обновление года
+        document.getElementById('year').textContent = new Date().getFullYear();
 
-        // Запуск при прокрутке
+        // Плавный скролл для якорных ссылок
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Эффект появления при скролле
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
-                if(entry.isIntersecting) {
-                    typeWriter();
-                    observer.disconnect();
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = 1;
+                    entry.target.style.transform = 'translateY(0)';
                 }
             });
         });
-        
-        observer.observe(document.querySelector('.terminal-section'));
 
-        // Год в футере
-        document.getElementById('year').textContent = new Date().getFullYear() + 52; // Чтобы был 2077+
-
-        // Параллакс эффект для сетки при движении мыши (немного магии)
-        document.addEventListener('mousemove', (e) => {
-            const grid = document.querySelector('.cyber-grid');
-            const x = e.clientX / window.innerWidth;
-            const y = e.clientY / window.innerHeight;
-            
-            grid.style.transform = `perspective(500px) rotateX(60deg) translateY(-100px) scale(2) translateX(${x * 20}px)`;
+        document.querySelectorAll('.card, .price-card, .step').forEach((el) => {
+            el.style.opacity = 0;
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = 'all 0.6s ease-out';
+            observer.observe(el);
         });
     </script>
-
 </body>
 </html>
